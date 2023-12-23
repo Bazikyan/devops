@@ -5,7 +5,7 @@
 region="eu-north-1"
 
 vpc_id=$(aws ec2 create-vpc --cidr-block=10.0.0.0/16 --region=$region --query=Vpc.VpcId)
-
+echo "$vpc_id"
 igw_id=aws ec2 create-internet-gateway \
   --region=$region \
   --query=InternetGateway.InternetGatewayId
