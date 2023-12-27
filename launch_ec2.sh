@@ -22,5 +22,5 @@ security_group_id=$(aws ec2 create-security-group --group-name="MySecurityGroup"
 
 aws ec2 authorize-security-group-ingress --group-id="$security_group_id" --protocol='tcp' --port='22' --cidr='0.0.0.0/0'
 
-aws ec2 run-instances --image-id='ami-0fe8bec493a81c7da' --count='1' --instance-type='t3.micro' --key-name='devops' --subnet-id="$subnet_id" --security-group-ids="$security_group_id" --region="$region"
+aws ec2 run-instances --image-id='ami-0fe8bec493a81c7da' --count='1' --instance-type='t3.micro' --key-name='devops' --subnet-id="$subnet_id" --security-group-ids="$security_group_id" --associate-public-ip-address --region="$region"
 
