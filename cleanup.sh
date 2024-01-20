@@ -35,6 +35,9 @@ done
 ## delete subnet
 sn_ids=$(aws ec2 describe-subnets --query "Subnets[?!(Tags && Tags[?Key=='usage' && Value=='permanent']) && !(DefaultForAz)].SubnetId" --region="$region" --output text)
 
+for sn_id in $sn_ids; do
+    aws ec2 delete-subnet --subnet-id="$sn_id" --region="$region"
+done
 #aws ec2 delete-subnet --subnet-id="$subnet_id" --region="$region"
 #
 ## detach and delete internet gateway
