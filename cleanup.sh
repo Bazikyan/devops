@@ -42,8 +42,12 @@ done
 ## detach and delete internet gateway
 igw_ids=$(aws ec2 describe-internet-gateways --query "InternetGateways[?!(Tags && Tags[?Key=='usage' && Value=='permanent'])].InternetGatewayId" --region="$region" --output text)
 
-#aws ec2 detach-internet-gateway --vpc-id="$vpc_id" --internet-gateway-id="$igw_id" --region="$region"
-#aws ec2 delete-internet-gateway --internet-gateway-id="$igw_id" --region="$region"
+for igw_id in $igw_ids; do
+    aws ec2 delete-internet-gateway --internet-gateway-id="$igw_id" --region="$region"
+done
+#    aws ec2 detach-internet-gateway --vpc-id="$vpc_id" --internet-gateway-id="$igw_id" --region="$region"
+
+
 #
 ## delete VPC
 #aws ec2 delete-vpc --vpc-id="$vpc_id" --region="$region"
