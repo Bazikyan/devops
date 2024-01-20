@@ -21,6 +21,7 @@ done
 
 ## delete route table
 rt_ids=$(aws ec2 describe-route-tables --region=eu-north-1 --query "RouteTables[?!(Tags && Tags[?Key=='usage' && Value=='permanent']) && !(Associations[0].Main)].RouteTableId" --region="$region" --output text)
+rt_association_ids=$(aws ec2 describe-route-tables --region=eu-north-1 --query "RouteTables[?!(Tags && Tags[?Key=='usage' && Value=='permanent']) && !(Associations[0].Main)].RouteTableAssociationId" --region="$region" --output text)
 
 #=$(aws ec2 describe-route-tables --region="$region" --query "RouteTables[?Associations[0].SubnetId!=''].Associations[0].RouteTableAssociationId" --output text)
 #aws ec2 disassociate-route-table --association-id --region="$region"
