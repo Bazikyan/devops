@@ -9,6 +9,7 @@ ec2_ids=$(aws ec2 describe-instances --query "Reservations[?!(Instances[0].Tags 
 
 if [ -n "$ec2_ids" ]; then
     aws ec2 terminate-instances --instance-ids $ec2_ids --region="$region"
+    aws ec2 wait instance-terminated --instance-ids $ec2_ids --region="$region"
 fi
 
 # delete security groups
