@@ -20,8 +20,12 @@ for sg_id in $sg_ids; do
 done
 
 ## delete route table
-#aws ec2 disassociate-route-table --association-id $(aws ec2 describe-route-tables --filters "Name=vpc-id,Values=$vpc_id" --region="$region" --query "RouteTables[?Associations[0].SubnetId!=''].Associations[0].RouteTableAssociationId" --output text) --region="$region"
+rt_ids=$(aws ec2 describe-route-tables --region=eu-north-1 --query "RouteTables[?!(Tags && Tags[?Key=='usage' && Value=='permanent']) && !(Associations[0].Main)].RouteTableId" --region="$region" --output text)
+
+#=$(aws ec2 describe-route-tables --region="$region" --query "RouteTables[?Associations[0].SubnetId!=''].Associations[0].RouteTableAssociationId" --output text)
+#aws ec2 disassociate-route-table --association-id --region="$region"
 #aws ec2 delete-route-table --route-table-id="$route_table_id" --region="$region"
+
 #
 ## delete subnet
 #aws ec2 delete-subnet --subnet-id="$subnet_id" --region="$region"
