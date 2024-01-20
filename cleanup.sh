@@ -52,7 +52,9 @@ for igw_id in $igw_ids; do
     aws ec2 delete-internet-gateway --internet-gateway-id="$igw_id" --region="$region"
 done
 
-
-#
 ## delete VPC
-#aws ec2 delete-vpc --vpc-id="$vpc_id" --region="$region"
+vpc_ids=$(aws ec2 describe-vpcs --query "Vpcs[?!(Tags && Tags[?Key=='usage' && Value=='permanent']) && !(IsDefault)].VpcId" --region="$region" --output text)
+
+for vpc_id in $vpc_ids; do
+    aws ec2 delete-vpc --vpc-id="$vpc_id" --region="$region"
+done
