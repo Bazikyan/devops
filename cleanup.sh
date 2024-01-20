@@ -43,7 +43,7 @@ done
 igw_ids=$(aws ec2 describe-internet-gateways --query "InternetGateways[?!(Tags && Tags[?Key=='usage' && Value=='permanent'])].InternetGatewayId" --region="$region" --output text)
 
 for igw_id in $igw_ids; do
-    vpc_assoc=aws ec2 describe-internet-gateways --internet-gateway-ids "$igw_id" --query "InternetGateways[?(Attachments)].Attachments[0].VpcId" --region="$region" --output text
+    vpc_assoc=$(aws ec2 describe-internet-gateways --internet-gateway-ids "$igw_id" --query "InternetGateways[?(Attachments)].Attachments[0].VpcId" --region="$region" --output text)
 
     if [ -n "$vpc_assoc" ]; then
         aws ec2 detach-internet-gateway --vpc-id="$vpc_assoc" --internet-gateway-id="$igw_id" --region="$region"
