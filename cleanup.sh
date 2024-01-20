@@ -7,7 +7,7 @@ region="eu-north-1"
 # delete instances
 ec2_ids=$(aws ec2 describe-instances --query "Reservations[?!(Instances[0].Tags && Instances[0].Tags[?Key=='usage' && Value=='permanent'])].Instances[*].InstanceId" --output text --region="$region")
 
-if [ -n "$instance_ids" ]; then
+if [ -n "$ec2_ids" ]; then
     aws ec2 terminate-instances --instance-ids $ec2_ids --region="$region"
 fi
 
