@@ -49,7 +49,7 @@ for igw_id in $igw_ids; do
         aws ec2 detach-internet-gateway --vpc-id="$vpc_assoc" --internet-gateway-id="$igw_id" --region="$region"
     fi
 
-#    aws ec2 delete-internet-gateway --internet-gateway-id="$igw_id" --region="$region"
+    aws ec2 delete-internet-gateway --internet-gateway-id="$igw_id" --region="$region"
 done
 
 
