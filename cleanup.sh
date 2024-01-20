@@ -38,9 +38,10 @@ sn_ids=$(aws ec2 describe-subnets --query "Subnets[?!(Tags && Tags[?Key=='usage'
 for sn_id in $sn_ids; do
     aws ec2 delete-subnet --subnet-id="$sn_id" --region="$region"
 done
-#aws ec2 delete-subnet --subnet-id="$subnet_id" --region="$region"
-#
+
 ## detach and delete internet gateway
+igw_ids=$(aws ec2 describe-internet-gateways --query "InternetGateways[?!(Tags && Tags[?Key=='usage' && Value=='permanent'])].InternetGatewayId" --region="$region" --output text)
+
 #aws ec2 detach-internet-gateway --vpc-id="$vpc_id" --internet-gateway-id="$igw_id" --region="$region"
 #aws ec2 delete-internet-gateway --internet-gateway-id="$igw_id" --region="$region"
 #
