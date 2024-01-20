@@ -20,12 +20,17 @@ for sg_id in $sg_ids; do
 done
 
 ## delete route table
-rt_ids=$(aws ec2 describe-route-tables --region=eu-north-1 --query "RouteTables[?!(Tags && Tags[?Key=='usage' && Value=='permanent']) && !(Associations[0].Main)].RouteTableId" --region="$region" --output text)
-rt_association_ids=$(aws ec2 describe-route-tables --region=eu-north-1 --query "RouteTables[?!(Tags && Tags[?Key=='usage' && Value=='permanent']) && !(Associations[0].Main)].Associations[0].RouteTableAssociationId" --region="$region" --output text)
+rt_assoc_ids=$(aws ec2 describe-route-tables --region=eu-north-1 --query "RouteTables[?!(Tags && Tags[?Key=='usage' && Value=='permanent']) && !(Associations[0].Main)].Associations[0].RouteTableAssociationId" --region="$region" --output text)
 
-#=$(aws ec2 describe-route-tables --region="$region" --query "RouteTables[?Associations[0].SubnetId!=''].Associations[0].RouteTableAssociationId" --output text)
-#aws ec2 disassociate-route-table --association-id --region="$region"
-#aws ec2 delete-route-table --route-table-id="$route_table_id" --region="$region"
+for rt_assoc_id in $rt_assoc_ids; do
+    aws ec2 disassociate-route-table --region="$region" --association-id="$rt_assoc_id"
+done
+
+rt_ids=$(aws ec2 describe-route-tables --region=eu-north-1 --query "RouteTables[?!(Tags && Tags[?Key=='usage' && Value=='permanent']) && !(Associations[0].Main)].RouteTableId" --region="$region" --output text)
+
+for rt_id in $rt_ids; do
+    aws ec2 delete-route-table --route-table-id="$rt_id" --region="$region"
+done
 
 #
 ## delete subnet
